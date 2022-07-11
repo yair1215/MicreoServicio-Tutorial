@@ -1,6 +1,7 @@
+
 spring:
   application:
-   name: usuario-service
+    name: eureka-service
   cloud:
     config:
       enabled: true
