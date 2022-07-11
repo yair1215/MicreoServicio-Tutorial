@@ -33,13 +33,14 @@ public class UserService {
     BikeFeignClient bikeFeignClient;
 
     public List<Carro> getCarros(int userId){
-        List<Carro> carros = restTemplate.getForObject("http://localhost:8002/carro/user/"+userId,List.class);
+        List<Carro> carros = restTemplate.getForObject("http://carro-service/carro/user/"+userId,List.class);
         return carros;
     }
     public List<Moto> getMotos(int userId){
-        List<Moto> motos = restTemplate.getForObject("http://localhost:8003/moto/user/"+userId,List.class);
+        List<Moto> motos = restTemplate.getForObject("http://moto-service/moto/user/"+userId,List.class);
         return motos;
     }
+
     public List<User> getAll(){
         return userRepository.findAll();
     }
