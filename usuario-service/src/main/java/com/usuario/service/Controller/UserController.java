@@ -47,23 +47,32 @@ public class UserController {
     @GetMapping("/carros/{userId}")
     public ResponseEntity<List<Carro>> getCarrosUserId(@PathVariable("userId") int userId){
 
-        List<Carro> carros = userService.getCarros(userId);
-
-        if (carros.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(carros,HttpStatus.OK);
+        try {
+            Optional<User> user = userService.getUserById(userId);
+            if (user.isPresent()) {
+                List<Carro> carros = userService.getCarros(userId);
+                return new ResponseEntity<>(carros, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
     }
     @GetMapping("/motos/{userId}")
-    public ResponseEntity<List<Moto>> getMotosUserId(@PathVariable("userId") int userId){
+    public ResponseEntity<List<Moto>> getMotosUserId(@PathVariable("userId") int userId) {
 
-        List<Moto> motos = userService.getMotos(userId);
+        try {
 
-        if (motos.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(motos,HttpStatus.OK);
+            Optional<User> user = userService.getUserById(userId);
+            if (user.isPresent()) {
+                List<Moto> motos = userService.getMotos(userId);
+                    return new ResponseEntity<>(motos, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
     }
     @PostMapping
@@ -76,7 +85,7 @@ public class UserController {
         }
     }
     @GetMapping("/getall/{userId}")
-    public  ResponseEntity<Map<String,Object>> getUserAll(@PathVariable("userId") int userId, @RequestBody Moto moto){
+    public  ResponseEntity<Map<String,Object>> getUserAll(@PathVariable("userId") int userId){
 
         try {
 
