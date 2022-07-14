@@ -61,7 +61,7 @@ public class UserController {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
     }
-    @CircuitBreaker(name = "carsCD", fallbackMethod = "fallbackGetMotosUserId")
+    @CircuitBreaker(name = "bikesCD", fallbackMethod = "fallbackGetMotosUserId")
     @GetMapping("/motos/{userId}")
     public ResponseEntity<List<Moto>> getMotosUserId(@PathVariable("userId") int userId) {
 
@@ -129,7 +129,7 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @CircuitBreaker(name = "carsCD", fallbackMethod = "fallbackSaveMoto")
+    @CircuitBreaker(name = "bikesCD", fallbackMethod = "fallbackSaveMoto")
     @PostMapping("/savemoto/{userId}")
     public  ResponseEntity<Moto> saveMoto(@PathVariable("userId") int userId,@RequestBody Moto moto){
 
