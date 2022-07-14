@@ -61,7 +61,7 @@ public class UserController {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
     }
-    @CircuitBreaker(name = "bikesCD", fallbackMethod = "fallbackGetMotosUserId")
+    @CircuitBreaker(name = "bikesCB", fallbackMethod = "fallbackGetMotosUserId")
     @GetMapping("/motos/{userId}")
     public ResponseEntity<List<Moto>> getMotosUserId(@PathVariable("userId") int userId) {
 
@@ -154,7 +154,7 @@ public class UserController {
         return new ResponseEntity("El usuario " + userId + " tiene los coches en el taller", HttpStatus.OK);
     }
 
-    private ResponseEntity<Carro> fallBackSaveCar(@PathVariable("userId") int userId, @RequestBody Carro car, RuntimeException e) {
+    private ResponseEntity<Carro> fallbackSaveCarro(@PathVariable("userId") int userId, @RequestBody Carro car, RuntimeException e) {
         return new ResponseEntity("El usuario " + userId + " no tiene dinero para coches", HttpStatus.OK);
     }
 
