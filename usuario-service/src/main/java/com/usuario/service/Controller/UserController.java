@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping("/carros/{userId}")
     public ResponseEntity<List<Carro>> getCarrosUserId(@PathVariable("userId") int userId){
 
-        try {
+
             Optional<User> user = userService.getUserById(userId);
             if (user.isPresent()) {
                 List<Carro> carros = userService.getCarros(userId);
@@ -57,9 +57,7 @@ public class UserController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
-        }
+
     }
     @CircuitBreaker(name = "bikesCB", fallbackMethod = "fallbackGetMotosUserId")
     @GetMapping("/motos/{userId}")
