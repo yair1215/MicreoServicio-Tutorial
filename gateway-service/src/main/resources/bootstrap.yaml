@@ -6,3 +6,8 @@ spring:
       enabled: true
       uri: http://localhost:8081
 
+jwt:
+  secret: testing
+  validity: 20
+  authDisabled: true
+

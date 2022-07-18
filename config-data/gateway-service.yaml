@@ -29,3 +29,7 @@ spring:
           uri: lb://moto-service
           predicates:
             - Path=/moto/**
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
