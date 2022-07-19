@@ -16,3 +16,6 @@ eureka:
         method: "POST"
       - uri: "/user/savebike/{1}[1-9]+[0-9]*"
         method: "POST"
+spring:
+  application:
+    zipkin: http://localhost:9411

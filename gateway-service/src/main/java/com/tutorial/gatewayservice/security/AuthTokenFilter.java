@@ -40,7 +40,7 @@ public class AuthTokenFilter extends AbstractGatewayFilterFactory<AuthTokenFilte
         return (((exchange, chain) -> {
              //routerValidator.isSecured.test(exchange.getRequest()) &&
             if (!jwtConfig.isAuthDisabled()) {
-
+                System.out.println("xxxxxxxxxxxxxxxxxxxxx");
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
                     return onError(exchange, HttpStatus.BAD_REQUEST);
 
@@ -65,6 +65,7 @@ public class AuthTokenFilter extends AbstractGatewayFilterFactory<AuthTokenFilte
                         return exchange;
                     }).flatMap(chain::filter);
             }
+            System.out.println("xxxxxxxxxxxxxxxxxxxxx");
         return chain.filter(exchange);
         }));
 

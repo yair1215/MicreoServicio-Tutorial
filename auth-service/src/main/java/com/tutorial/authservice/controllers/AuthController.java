@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -77,7 +77,7 @@ public class AuthController {
                 roles));
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("/authorize")
     public ResponseEntity<?> authenticateValidator(@Valid @RequestBody RequestDto RequestDto) {
 
@@ -86,7 +86,7 @@ public class AuthController {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_USER"));
         //  Collection<? extends GrantedAuthority> userAuthorities = this.authentication.getAuthorities();
-        return ResponseEntity.ok(new JwtRespGateway(authorized));
+        return ResponseEntity.ok((authorized));
 
     }
 
