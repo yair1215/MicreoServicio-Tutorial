@@ -77,7 +77,7 @@ public class AuthController {
                 roles));
     }
 
-    //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("/authorize")
     public ResponseEntity<?> authenticateValidator(@Valid @RequestBody RequestDto RequestDto) {
 

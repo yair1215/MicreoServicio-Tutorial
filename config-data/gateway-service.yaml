@@ -19,6 +19,8 @@ spring:
       routes:
         - id: usuario-service
           uri: lb://usuario-service
+          filters:
+            - AuthTokenFilter
           predicates:
             - Path=/user/**
         - id: carro-service
