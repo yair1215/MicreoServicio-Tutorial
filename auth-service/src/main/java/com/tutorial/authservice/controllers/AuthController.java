@@ -19,6 +19,7 @@ import com.tutorial.authservice.payload.response.MessageResponse;
 import com.tutorial.authservice.repository.RoleRepository;
 import com.tutorial.authservice.repository.UserRepository;
 import com.tutorial.authservice.security.jwt.JwtUtils;
+import com.tutorial.authservice.security.jwt.RouterValidator;
 import com.tutorial.authservice.security.services.UserDetailsImpl;
 import com.tutorial.authservice.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +54,9 @@ public class AuthController {
     PasswordEncoder encoder;
     @Autowired
     JwtUtils jwtUtils;
+
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    RouterValidator routeValidator;
 
     Authentication authentication;
 
@@ -77,16 +79,23 @@ public class AuthController {
                 roles));
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @PostMapping("/authorize")
     public ResponseEntity<?> authenticateValidator(@Valid @RequestBody RequestDto RequestDto) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_USER"));
-        //  Collection<? extends GrantedAuthority> userAuthorities = this.authentication.getAuthorities();
-        return ResponseEntity.ok((authorized));
+        boolean authorized = false;// = authorities.contains(new SimpleGrantedAuthority("ROLE_USER"));
+        if(authorities.contains(new SimpleGrantedAuthority("ROLE_MODERATOR"))){
+                authorized = true;
+        }else if(authorities.contains(new SimpleGrantedAuthority("ROLE_USER"))){
+          //  if(routeValidator.isAdminPath(RequestDto))
+            //     authorized = true;
+            authorized = false;
+        }
+
+        return ResponseEntity.ok(new JwtRespGateway(authorized));
 
     }
 
