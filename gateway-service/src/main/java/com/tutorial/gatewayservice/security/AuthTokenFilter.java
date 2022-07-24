@@ -14,10 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.TcpClient;
@@ -88,7 +86,7 @@ public class AuthTokenFilter extends AbstractGatewayFilterFactory<AuthTokenFilte
                     //.defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                     .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))  // timeout
                     .build();
-    try{
+    try {
            /*.method(exchange.getRequest().getMethod())
               JwtReqpGateway jwtReqpGateway = webClient.post()
                     .uri("/api/auth/authorize")
@@ -116,21 +114,22 @@ public class AuthTokenFilter extends AbstractGatewayFilterFactory<AuthTokenFilte
                 .retrieve()
                 .bodyToMono(Void.class);*/
 
-        JwtReqpGateway jwtReqpGateway = webClient.post()
-                .uri("/api/auth/authorize")
-                .body(Mono.just(new RequestDto(exchange.getRequest().getPath().toString(), exchange.getRequest().getMethod().toString())), RequestDto.class)
-                .retrieve()
-                // handle status
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
-                    //   logger.error("Error endpoint with status code {}",  clientResponse.statusCode());
-                    return Mono.error(new Exception("HTTP Status 500 error"));
-                })
-                .bodyToMono(JwtReqpGateway.class)
-                .toFuture()
-                .get();
+             // Mono<HttpStatus> httpStatusMono = webClient.get()
+               // .uri("/api/authorize/user")
+                 //       .accept(MediaType.APPLICATION_JSON)
+                   //     .exchange()
+                     //   .map(response ->  response.statusCode());
 
-                return chain.filter(exchange);
-             /*  JwtReqpGateway jwtReqpGateway1 = jwtReqpGateway.share().block();
+               Mono<JwtReqpGateway> jwtReqpGateway = webClient.post()
+                .uri("/api/authorize"+exchange.getRequest().getPath())
+                .retrieve()
+                .bodyToMono(JwtReqpGateway.class);
+
+        return chain.filter(exchange);
+             /*
+             .uri("http://auth-service/api/authorize/user")
+                .headers(headers -> headers.putAll(exchange.getRequest().getHeaders()))
+              JwtReqpGateway jwtReqpGateway1 = jwtReqpGateway.share().block();
                     if (jwtReqpGateway.getIsauthorized()) {
                         return chain.filter(exchange);
                     }else {
