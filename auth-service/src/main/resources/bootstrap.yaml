@@ -32,3 +32,6 @@ jwt:
 jwte:
   expirationMs: 86400000
 
+server:
+  servlet:
+    context-path: /api/auth-service
