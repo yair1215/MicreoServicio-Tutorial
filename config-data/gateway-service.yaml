@@ -22,7 +22,7 @@ spring:
           filters:
             - AuthTokenFilter
           predicates:
-            - Path=/api/usuario-service/a/**
+            - Path=/api/usuario-service/**
         - id: carro-service
           uri: lb://carro-service
           predicates:
