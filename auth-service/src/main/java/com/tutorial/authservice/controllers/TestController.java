@@ -48,12 +48,6 @@ public class TestController {
         return ResponseEntity.ok(new JwtRespGateway(authorized));
     }
 
-    @PostMapping("/user")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> userAccesspost(){
-        boolean authorized = false;// = authorities.contains(new SimpleGrantedAuthority("ROLE_USER"));
-        return ResponseEntity.ok(new JwtRespGateway(authorized));
-    }
 
     @GetMapping("/mod")
     @PreAuthorize("hasRole('MODERATOR')")
